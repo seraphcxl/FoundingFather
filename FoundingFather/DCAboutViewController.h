@@ -1,0 +1,18 @@
+//
+//  DCAboutViewController.h
+//  FoundingFather
+//
+//  Created by Derek Chen on 13-11-20.
+//  Copyright (c) 2013年 CaptainSolid Studio. All rights reserved.
+//
+
+#import <Cocoa/Cocoa.h>
+
+@interface DCAboutViewController : NSViewController
+
+@property (weak) IBOutlet NSTextField *label;
+
+- (IBAction)tapCloseButton:(id)sender;
+- (IBAction)tapCloseAllButton:(id)sender;
+
+@end
