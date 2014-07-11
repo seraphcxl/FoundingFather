@@ -7,7 +7,6 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "NSViewController+ViewLogic.h"
 
 @interface DCAsyncReactiveViewController : NSViewController {
 }

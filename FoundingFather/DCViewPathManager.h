@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DCSingletonTemplate.h"
 
 #define DCViewPathManager_MaxUndoRedo ((int)16)
 

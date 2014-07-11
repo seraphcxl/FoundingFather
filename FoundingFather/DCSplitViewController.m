@@ -8,7 +8,6 @@
 
 #import "DCSplitViewController.h"
 #import <Quartz/Quartz.h>
-#import "NSViewController+ViewLogic.h"
 
 @interface DCSplitViewController ()
 
