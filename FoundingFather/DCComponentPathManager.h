@@ -8,6 +8,25 @@
 
 #import <Foundation/Foundation.h>
 
-@interface DCComponentPathManager : NSObject
+extern NSString *kDCComponentPathManagerArchiveTree;
+
+@interface DCComponentPathManager : NSObject <DCTreeDelegate>
+
+@property (strong, nonatomic, readonly) NSURL *archiveURL;
+@property (strong, nonatomic, readonly) DCTree *tree;
+
+DEFINE_SINGLETON_FOR_HEADER(DCComponentPathManager)
+
+- (instancetype)initWithRootNodeKey:(NSString *)key andValue:(id<NSCoding>)value;
+- (instancetype)initWithArchive:(NSURL *)url;
+
+- (BOOL)archiveTo:(NSURL *)url;
+
+- (void)undo;
+- (void)redo;
+
+- (BOOL)resetPathWithNodeDescription:(NSString *)desc andActionBlock:(DCTreeActionBlock)actionBlock;
+
+- (NSString *)keyLevelTraversal:(BOOL)needLevelSeparator;
 
 @end
