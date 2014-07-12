@@ -24,6 +24,7 @@ NSString *kDCComponentPathManagerArchiveTree = @"DCComponentPathManagerArchiveTr
 
 @implementation DCComponentPathManager
 
+@synthesize delegate = _delegate;
 @synthesize archiveURL = _archiveURL;
 @synthesize tree = _tree;
 @synthesize undoStack = _undoStack;
@@ -35,6 +36,7 @@ DEFINE_SINGLETON_FOR_CLASS(DCComponentPathManager)
     DCComponentPathManager *result = nil;
     do {
         DCAssert(key != nil && [key length] != 0 && value != nil);
+        self.delegate = nil;
         self.archiveURL = nil;
         self.tree = [[DCTree alloc] initWithRootNodeKey:key andValue:value];
         self.tree.delegate = self;
@@ -49,6 +51,7 @@ DEFINE_SINGLETON_FOR_CLASS(DCComponentPathManager)
     DCComponentPathManager *result = nil;
     do {
         DCAssert(url != nil);
+        self.delegate = nil;
         self.archiveURL = [url copy];
         NSData *compressedData = [NSData dataWithContentsOfURL:url];
         NSError *err = nil;
@@ -72,6 +75,7 @@ DEFINE_SINGLETON_FOR_CLASS(DCComponentPathManager)
         self.tree.delegate = nil;
         self.tree = nil;
         self.archiveURL = nil;
+        self.delegate = nil;
     } while (NO);
 }
 
@@ -113,7 +117,13 @@ DEFINE_SINGLETON_FOR_CLASS(DCComponentPathManager)
             NSLog(@"%@", [err localizedDescription]);
             break;
         }
+        if (self.delegate && [self.delegate respondsToSelector:@selector(componentPathMgr:willUndo:)]) {
+            [self.delegate componentPathMgr:self willUndo:self.tree];
+        }
         [self unarchiveTreeFromData:rawData];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(componentPathMgr:didUndo:)]) {
+            [self.delegate componentPathMgr:self didUndo:self.tree];
+        }
     } while (NO);
 }
 
@@ -136,7 +146,13 @@ DEFINE_SINGLETON_FOR_CLASS(DCComponentPathManager)
             NSLog(@"%@", [err localizedDescription]);
             break;
         }
+        if (self.delegate && [self.delegate respondsToSelector:@selector(componentPathMgr:willRedo:)]) {
+            [self.delegate componentPathMgr:self willRedo:self.tree];
+        }
         [self unarchiveTreeFromData:rawData];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(componentPathMgr:didRedo:)]) {
+            [self.delegate componentPathMgr:self didRedo:self.tree];
+        }
     } while (NO);
 }
 
@@ -146,7 +162,13 @@ DEFINE_SINGLETON_FOR_CLASS(DCComponentPathManager)
         if (!self.tree) {
             break;
         }
+        if (self.delegate && [self.delegate respondsToSelector:@selector(componentPathMgr:willResetPath:from:)]) {
+            [self.delegate componentPathMgr:self willResetPath:desc from:self.tree];
+        }
         result = [self.tree actionWithNodeByTreeNodeDescription:desc andActionBlock:actionBlock];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(componentPathMgr:didResetPath:from:)]) {
+            [self.delegate componentPathMgr:self didResetPath:desc from:self.tree];
+        }
         if (result && self.redoStack) {
             [self.redoStack resetStack];
         }

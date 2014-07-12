@@ -10,8 +10,22 @@
 
 extern NSString *kDCComponentPathManagerArchiveTree;
 
+@class DCComponentPathManager;
+
+@protocol DCComponentPathManagerDelegate <NSObject>
+
+- (void)componentPathMgr:(DCComponentPathManager *)mgr willUndo:(DCTree *)currentTree;
+- (void)componentPathMgr:(DCComponentPathManager *)mgr didUndo:(DCTree *)currentTree;
+- (void)componentPathMgr:(DCComponentPathManager *)mgr willRedo:(DCTree *)currentTree;
+- (void)componentPathMgr:(DCComponentPathManager *)mgr didRedo:(DCTree *)currentTree;
+- (void)componentPathMgr:(DCComponentPathManager *)mgr willResetPath:(NSString *)desc from:(DCTree *)currentTree;
+- (void)componentPathMgr:(DCComponentPathManager *)mgr didResetPath:(NSString *)desc from:(DCTree *)currentTree;
+
+@end
+
 @interface DCComponentPathManager : NSObject <DCTreeDelegate>
 
+@property (weak, atomic) id<DCComponentPathManagerDelegate> delegate;
 @property (strong, nonatomic, readonly) NSURL *archiveURL;
 @property (strong, nonatomic, readonly) DCTree *tree;
 
