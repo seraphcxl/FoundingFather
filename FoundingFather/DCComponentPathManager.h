@@ -29,7 +29,7 @@ extern NSString *kDCComponentPathManagerArchiveTree;
 @property (strong, nonatomic, readonly) NSURL *archiveURL;
 @property (strong, nonatomic, readonly) DCTree *tree;
 
-DEFINE_SINGLETON_FOR_HEADER(DCComponentPathManager)
+//DEFINE_SINGLETON_FOR_HEADER(DCComponentPathManager)
 
 - (instancetype)initWithRootNodeKey:(NSString *)key andValue:(id<NSCoding>)value;
 - (instancetype)initWithArchive:(NSURL *)url;

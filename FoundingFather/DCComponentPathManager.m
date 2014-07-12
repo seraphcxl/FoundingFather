@@ -30,7 +30,7 @@ NSString *kDCComponentPathManagerArchiveTree = @"DCComponentPathManagerArchiveTr
 @synthesize undoStack = _undoStack;
 @synthesize redoStack = _redoStack;
 
-DEFINE_SINGLETON_FOR_CLASS(DCComponentPathManager)
+//DEFINE_SINGLETON_FOR_CLASS(DCComponentPathManager)
 
 - (instancetype)initWithRootNodeKey:(NSString *)key andValue:(id<NSCoding>)value {
     DCComponentPathManager *result = nil;
